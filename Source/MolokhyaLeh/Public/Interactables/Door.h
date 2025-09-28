@@ -29,4 +29,15 @@ public:
 
 	virtual void Interact_Implementation(AMlCharacter* Interactor) override;
 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Lock")
+	bool bLocked = true;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Lock")
+	FName RequiredKeyId = "Key_Door01";
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Lock")
+	bool bConsumeKeyOnUse = true;
+
+	UFUNCTION(BlueprintCallable, Category = "Door")
+	void OpenDoor();
 };

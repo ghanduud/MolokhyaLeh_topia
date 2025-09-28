@@ -2,6 +2,9 @@
 
 
 #include "Interactables/Door.h"
+#include "Character/MlCharacter.h"
+#include "Inventory/Inventory.h"
+
 
 // Sets default values
 ADoor::ADoor()
@@ -25,12 +28,28 @@ void ADoor::Tick(float DeltaTime)
 
 }
 
+void ADoor::OpenDoor()
+{
+    UE_LOG(LogTemp, Log, TEXT("Door opened."));
+}
+
 void ADoor::Interact_Implementation(AMlCharacter* Interactor)
 {
 	IInteractable::Interact_Implementation(Interactor);
 
 
 	UE_LOG(LogTemp, Warning, TEXT("interact"));
+
+    if (!bLocked) { OpenDoor(); return; }
+
+    if (Interactor && Interactor->Inventory && Interactor->Inventory->HasItem(RequiredKeyId))
+    {
+        if (bConsumeKeyOnUse)
+            Interactor->Inventory->ConsumeItem(RequiredKeyId, 1);
+
+        bLocked = false;
+        OpenDoor();
+    }
 }
 
 

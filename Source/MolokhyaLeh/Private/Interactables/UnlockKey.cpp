@@ -2,6 +2,9 @@
 
 
 #include "Interactables/UnlockKey.h"
+#include "Inventory/Inventory.h"
+#include "Character/MlCharacter.h"
+#include "Interactables/UnlockKey.h"
 
 // Sets default values
 AUnlockKey::AUnlockKey()
@@ -25,3 +28,11 @@ void AUnlockKey::Tick(float DeltaTime)
 
 }
 
+void AUnlockKey::Interact_Implementation(AMlCharacter* Interactor)
+{
+    if (Interactor && Interactor->Inventory)
+    {
+        Interactor->Inventory->AddItem(KeyId, ItemType, Quantity, KeyDisplayName);
+        Destroy();
+    }
+}
