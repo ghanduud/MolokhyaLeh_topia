@@ -36,31 +36,38 @@ void UInteractionComponent::TraceForInteractable()
 	FHitResult Hit;
 	FCollisionQueryParams Params;
 	Params.AddIgnoredActor(Owner);
+	
+	FCollisionObjectQueryParams ObjectParams;
+	ObjectParams.AddObjectTypesToQuery(ECC_WorldDynamic);
+	ObjectParams.AddObjectTypesToQuery(ECC_Pawn);
 
-	bool bHit = GetWorld()->SweepSingleByChannel(
+	bool bHit = GetWorld()->SweepSingleByObjectType(
 		Hit,
 		Start,
 		End,
 		FQuat::Identity,
-		TraceChannel,
+		ObjectParams,
 		FCollisionShape::MakeSphere(SphereRadius),
 		Params
 	);
 
 	if (bHit)
 	{
-		FocusedActor = Hit.GetActor();
-		// Debug
-		DrawDebugSphere(GetWorld(), Hit.ImpactPoint, SphereRadius, 12, FColor::Green);
+		AActor* HitActor = Hit.GetActor();
+		if (HitActor && HitActor->GetClass()->ImplementsInterface(UInteractable::StaticClass()))
+		{
+			FocusedActor = HitActor;
+			DrawDebugSphere(GetWorld(), Hit.ImpactPoint, SphereRadius, 12, FColor::Green);
+		}
 	}
 	else
 	{
 		FocusedActor = nullptr;
 	}
 
-	// Debug line
 	DrawDebugLine(GetWorld(), Start, End, FColor::Yellow);
 }
+
 
 void UInteractionComponent::Interact()
 {
