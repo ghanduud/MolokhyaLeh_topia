@@ -21,7 +21,7 @@ struct FInventoryItem
     GENERATED_BODY()
 
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Inventory")
-    FName Key = NAME_None;
+    FName ItemId = NAME_None;
 
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Inventory")
     FText DisplayName;
@@ -34,7 +34,7 @@ struct FInventoryItem
 
     bool operator<(const FInventoryItem& Other) const
     {
-        return Key.LexicalLess(Other.Key);
+        return ItemId.LexicalLess(Other.ItemId);
     }
 };
 
@@ -47,16 +47,16 @@ public:
     UInventory();
 
     UFUNCTION(BlueprintCallable, Category = "Inventory")
-    void AddItem(const FName& Key, EItemType Type, int32 DeltaQty, FText DisplayName = FText());
+    void AddItem(const FName& ItemId, EItemType Type, int32 DeltaQty, FText DisplayName = FText());
 
     UFUNCTION(BlueprintCallable, Category = "Inventory")
-    bool ConsumeItem(const FName& Key, int32 Qty);
+    bool ConsumeItem(const FName& ItemId, int32 Qty);
 
     UFUNCTION(BlueprintPure, Category = "Inventory")
-    bool HasItem(const FName& Key, int32 MinQty = 1) const;
+    bool HasItem(const FName& ItemId, int32 MinQty = 1) const;
 
     UFUNCTION(BlueprintPure, Category = "Inventory")
-    bool TryGetItem(const FName& Key, FInventoryItem& OutItem) const;
+    bool TryGetItem(const FName& ItemId, FInventoryItem& OutItem) const;
 
     UFUNCTION(BlueprintPure, Category = "Inventory")
     const TArray<FInventoryItem>& GetAll() const { return Items; }
@@ -65,5 +65,5 @@ private:
     UPROPERTY(VisibleAnywhere, Category = "Inventory")
     TArray<FInventoryItem> Items;
 
-    int32 LowerBound(const FName& Key) const;
+    int32 LowerBound(const FName& ItemId) const;
 };

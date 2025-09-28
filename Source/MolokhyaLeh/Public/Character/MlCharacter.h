@@ -49,6 +49,5 @@ public:
 	TObjectPtr<UInteractionComponent> InteractionComponent;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Inventory")
-	class UInventory* Inventory;
-
+	TObjectPtr<UInventory> Inventory;
 };

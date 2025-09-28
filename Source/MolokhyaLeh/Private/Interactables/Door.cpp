@@ -21,6 +21,11 @@ void ADoor::BeginPlay()
 	
 }
 
+void ADoor::Tick(float DeltaTime)
+{
+	Super::Tick(DeltaTime);
+}
+
 void ADoor::Interact_Implementation(AMlCharacter* Interactor)
 {
 	IInteractable::Interact_Implementation(Interactor);
