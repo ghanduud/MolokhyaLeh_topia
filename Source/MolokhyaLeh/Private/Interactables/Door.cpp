@@ -21,18 +21,6 @@ void ADoor::BeginPlay()
 	
 }
 
-// Called every frame
-void ADoor::Tick(float DeltaTime)
-{
-	Super::Tick(DeltaTime);
-
-}
-
-void ADoor::OpenDoor()
-{
-    UE_LOG(LogTemp, Log, TEXT("Door opened."));
-}
-
 void ADoor::Interact_Implementation(AMlCharacter* Interactor)
 {
 	IInteractable::Interact_Implementation(Interactor);
@@ -73,10 +61,6 @@ void ADoor::Interact_Implementation(AMlCharacter* Interactor)
 		}
 	}
 }
-
-
-
-
 
 void ADoor::OpenDoor()
 {
