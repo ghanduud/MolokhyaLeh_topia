@@ -8,6 +8,7 @@
 
 class UInputHandelComponent;
 class UPlayerMovementComponent;
+class UInteractionComponent;
 
 UCLASS()
 class MOLOKHYALEH_API AMlCharacter : public ACharacter
@@ -42,5 +43,8 @@ public:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Components")
 	TObjectPtr<UPlayerMovementComponent> PlayerMovementComponent;
+	
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Components")
+	TObjectPtr<UInteractionComponent> InteractionComponent;
 
 };

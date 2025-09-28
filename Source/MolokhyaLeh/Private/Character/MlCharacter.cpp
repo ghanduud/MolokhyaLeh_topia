@@ -6,6 +6,7 @@
 #include "EnhancedInputComponent.h"
 #include "Camera/CameraComponent.h"
 #include "Character/Components/InputHandelComponent.h"
+#include "Character/Components/InteractionComponent.h"
 #include "Character/Components/PlayerMovementComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 
@@ -23,7 +24,10 @@ AMlCharacter::AMlCharacter()
 
 	this->InputHandelComponent = CreateDefaultSubobject<UInputHandelComponent>(TEXT("InputHandel"));
 	this->PlayerMovementComponent = CreateDefaultSubobject<UPlayerMovementComponent>(TEXT("PlayerMovement"));
+	this->InteractionComponent = CreateDefaultSubobject<UInteractionComponent>(TEXT("InteractionComponent"));
 
+
+	
 }
 
 void AMlCharacter::BeginPlay()
