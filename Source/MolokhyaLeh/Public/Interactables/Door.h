@@ -38,4 +38,10 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = "Door")
 	void CloseDoor();
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Lock")
+	FName RequiredKeyId = "Key_Door01";
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Lock")
+	bool bConsumeKeyOnUse = true;
 };

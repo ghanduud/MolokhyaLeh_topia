@@ -2,6 +2,9 @@
 
 
 #include "Interactables/Door.h"
+#include "Character/MlCharacter.h"
+#include "Inventory/Inventory.h"
+
 
 // Sets default values
 ADoor::ADoor()
@@ -25,17 +28,26 @@ void ADoor::Tick(float DeltaTime)
 
 }
 
+void ADoor::OpenDoor()
+{
+    UE_LOG(LogTemp, Log, TEXT("Door opened."));
+}
+
 void ADoor::Interact_Implementation(AMlCharacter* Interactor)
 {
 	IInteractable::Interact_Implementation(Interactor);
 	
 	if (bIsLocked)
 	{
-		// TODO: Replace this with your real inventory/key check
 		bool bHasKey = false;
 
-		// Example pseudo-code (adjust when your inventory system exists):
-		// bHasKey = Player->Inventory->HasItem("DoorKey");
+		if (Interactor && Interactor->Inventory && Interactor->Inventory->HasItem(RequiredKeyId))
+		{
+			if (bConsumeKeyOnUse)
+				Interactor->Inventory->ConsumeItem(RequiredKeyId, 1);
+
+			bHasKey = true;
+		}
 
 		if (bHasKey)
 		{
