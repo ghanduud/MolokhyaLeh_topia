@@ -28,12 +28,54 @@ void ADoor::Tick(float DeltaTime)
 void ADoor::Interact_Implementation(AMlCharacter* Interactor)
 {
 	IInteractable::Interact_Implementation(Interactor);
+	
+	if (bIsLocked)
+	{
+		// TODO: Replace this with your real inventory/key check
+		bool bHasKey = false;
 
+		// Example pseudo-code (adjust when your inventory system exists):
+		// bHasKey = Player->Inventory->HasItem("DoorKey");
 
-	UE_LOG(LogTemp, Warning, TEXT("interact"));
+		if (bHasKey)
+		{
+			UE_LOG(LogTemp, Warning, TEXT("Player has the key! Unlocking door."));
+			bIsLocked = false;
+			OpenDoor();
+		}
+		else
+		{
+			UE_LOG(LogTemp, Warning, TEXT("Door is locked. Player needs a key."));
+			return;
+		}
+	}
+	else
+	{
+		if (bIsOpen)
+		{
+			CloseDoor();
+		}
+		else
+		{
+			OpenDoor();
+		}
+	}
 }
 
 
 
 
 
+void ADoor::OpenDoor()
+{
+	// TODO: add animation / sound
+	bIsOpen = true;
+	UE_LOG(LogTemp, Warning, TEXT("Door opened"));
+}
+
+void ADoor::CloseDoor()
+{
+	// TODO: add animation / sound
+	bIsOpen = false;
+	UE_LOG(LogTemp, Warning, TEXT("Door closed"));
+}
