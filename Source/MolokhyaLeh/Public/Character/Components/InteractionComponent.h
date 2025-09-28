@@ -5,7 +5,9 @@
 #include "Components/ActorComponent.h"
 #include "InteractionComponent.generated.h"
 
-UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
+class AMlCharacter;
+
+UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent), Within=MlCharacter)
 class MOLOKHYALEH_API UInteractionComponent : public UActorComponent
 {
 	GENERATED_BODY()

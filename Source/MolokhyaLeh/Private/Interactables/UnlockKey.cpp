@@ -1,10 +1,10 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "Interactables/Door.h"
+#include "Interactables/UnlockKey.h"
 
 // Sets default values
-ADoor::ADoor()
+AUnlockKey::AUnlockKey()
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
@@ -12,28 +12,16 @@ ADoor::ADoor()
 }
 
 // Called when the game starts or when spawned
-void ADoor::BeginPlay()
+void AUnlockKey::BeginPlay()
 {
 	Super::BeginPlay();
 	
 }
 
 // Called every frame
-void ADoor::Tick(float DeltaTime)
+void AUnlockKey::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
 }
-
-void ADoor::Interact_Implementation(AMlCharacter* Interactor)
-{
-	IInteractable::Interact_Implementation(Interactor);
-
-
-	UE_LOG(LogTemp, Warning, TEXT("interact"));
-}
-
-
-
-
 

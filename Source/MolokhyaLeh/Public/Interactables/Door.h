@@ -7,6 +7,8 @@
 #include "Interfaces/Interactable.h"
 #include "Door.generated.h"
 
+class AMlCharacter;
+
 UCLASS()
 class MOLOKHYALEH_API ADoor : public AActor, public IInteractable
 {
@@ -25,6 +27,6 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 
-	virtual void Interact_Implementation(AActor* Interactor) override;
+	virtual void Interact_Implementation(AMlCharacter* Interactor) override;
 
 };

@@ -19,12 +19,12 @@ void UInteractionComponent::TickComponent(float DeltaTime, ELevelTick TickType, 
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
-	TraceForInteractable();
+	this->TraceForInteractable();
 }
 
 void UInteractionComponent::TraceForInteractable()
 {
-	AMlCharacter* Owner = Cast<AMlCharacter>(GetOwner());
+	AMlCharacter* Owner = this->GetOuterAMlCharacter();
 	if (!Owner) return;
 
 	UCameraComponent* Camera = Owner->CameraComponent;
@@ -73,6 +73,6 @@ void UInteractionComponent::Interact()
 {
 	if (FocusedActor && FocusedActor->GetClass()->ImplementsInterface(UInteractable::StaticClass()))
 	{
-		IInteractable::Execute_Interact(FocusedActor, GetOwner());
+		IInteractable::Execute_Interact(FocusedActor, this->GetOuterAMlCharacter());
 	}
 }
