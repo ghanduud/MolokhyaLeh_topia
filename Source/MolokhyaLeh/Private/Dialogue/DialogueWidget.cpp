@@ -30,7 +30,10 @@ void UDialogueWidget::BeginType(const FString& Full)
     if (Words.Num() == 0)
     {
         bFullyRevealed = true;
-        BuildChoices();
+        if (PendingChoices.Num() > 0)
+        {
+            BP_BuildChoices(PendingChoices);   // let Blueprint create the buttons
+        }
         return;
     }
 
@@ -54,9 +57,13 @@ void UDialogueWidget::TickType()
         // finished
         GetWorld()->GetTimerManager().ClearTimer(TypeTimer);
         bFullyRevealed = true;
-        BuildChoices();
+        if (PendingChoices.Num() > 0)
+        {
+            BP_BuildChoices(PendingChoices);   // let Blueprint create the buttons
+        }
     }
 }
+
 
 void UDialogueWidget::RevealAll()
 {
@@ -67,7 +74,10 @@ void UDialogueWidget::RevealAll()
     Text_Dialogue->SetText(FText::FromString(CurrentShown));
     bFullyRevealed = true;
 
-    BuildChoices();
+    if (PendingChoices.Num() > 0)
+    {
+        BP_BuildChoices(PendingChoices);
+    }
 }
 
 void UDialogueWidget::BuildChoices()
@@ -121,3 +131,19 @@ FReply UDialogueWidget::NativeOnKeyDown(const FGeometry& G, const FKeyEvent& E)
     return Super::NativeOnKeyDown(G, E);
 }
 
+void UDialogueWidget::UI_RevealAll()
+{
+    RevealAll();
+}
+
+void UDialogueWidget::UI_ChooseIndex(int32 Index)
+{
+    if (!bFullyRevealed)
+    {
+        RevealAll();
+    }
+    if (OnChoose.IsBound())
+    {
+        OnChoose.Execute(Index);
+    }
+}
