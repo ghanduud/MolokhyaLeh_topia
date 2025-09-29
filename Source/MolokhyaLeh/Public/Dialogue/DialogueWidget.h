@@ -19,10 +19,10 @@ class MOLOKHYALEH_API UDialogueWidget : public UUserWidget
 
 public:
     // BindWidget: create a BP (WBP_Dialogue) with these names
-    UPROPERTY(meta = (BindWidget))
+    UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
     UTextBlock* Text_Dialogue;
 
-    UPROPERTY(meta = (BindWidget))
+    UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
     UVerticalBox* Box_Choices;
 
     // Speed: one word per this many seconds
@@ -39,6 +39,12 @@ public:
     // Delegates back to component
     FDialogueAdvance OnAdvance;
     FDialogueChoose  OnChoose;
+
+    UFUNCTION(BlueprintImplementableEvent, Category = "Dialogue")
+    void BP_BuildChoices(const TArray<FDialogueChoice>& Choices);
+
+    UFUNCTION(BlueprintCallable) void UI_RevealAll();
+    UFUNCTION(BlueprintCallable) void UI_ChooseIndex(int32 Index);  
 
 protected:
     virtual FReply NativeOnKeyDown(const FGeometry& InGeometry, const FKeyEvent& InKeyEvent) override;
