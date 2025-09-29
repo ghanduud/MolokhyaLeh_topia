@@ -10,6 +10,8 @@
 #include "Character/Components/PlayerMovementComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Inventory/Inventory.h"
+#include "Perception/AIPerceptionStimuliSourceComponent.h"
+#include "Perception/AISense_Sight.h"
 
 AMlCharacter::AMlCharacter()
 {
@@ -28,7 +30,10 @@ AMlCharacter::AMlCharacter()
 	this->InteractionComponent = CreateDefaultSubobject<UInteractionComponent>(TEXT("InteractionComponent"));
 
 	Inventory = CreateDefaultSubobject<UInventory>(TEXT("Inventory"));
-	
+
+	StimuliSource = CreateDefaultSubobject<UAIPerceptionStimuliSourceComponent>(TEXT("StimuliSource"));
+	StimuliSource->bAutoRegister = true;
+	StimuliSource->RegisterForSense(UAISense_Sight::StaticClass());
 }
 
 void AMlCharacter::BeginPlay()
