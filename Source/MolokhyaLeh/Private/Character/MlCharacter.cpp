@@ -9,6 +9,7 @@
 #include "Character/Components/InteractionComponent.h"
 #include "Character/Components/PlayerMovementComponent.h"
 #include "GameFramework/SpringArmComponent.h"
+#include "Inventory/Inventory.h"
 
 AMlCharacter::AMlCharacter()
 {
@@ -26,7 +27,7 @@ AMlCharacter::AMlCharacter()
 	this->PlayerMovementComponent = CreateDefaultSubobject<UPlayerMovementComponent>(TEXT("PlayerMovement"));
 	this->InteractionComponent = CreateDefaultSubobject<UInteractionComponent>(TEXT("InteractionComponent"));
 
-
+	Inventory = CreateDefaultSubobject<UInventory>(TEXT("Inventory"));
 	
 }
 

@@ -17,5 +17,5 @@ class MOLOKHYALEH_API IInteractable
 
 public:
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Interaction")
-	void Interact(AActor* Interactor);
+	void Interact(AMlCharacter* Interactor);
 };
