@@ -67,16 +67,16 @@ void ADoor::Interact_Implementation(AMlCharacter* Interactor)
 	}
 }
 
-void ADoor::OpenDoor()
+void ADoor::OpenDoor_Implementation()
 {
-	// TODO: add animation / sound
+	UE_LOG(LogTemp, Log, TEXT("ADoor::OpenDoor_Implementation (C++ default)"));
 	bIsOpen = true;
-	UE_LOG(LogTemp, Warning, TEXT("Door opened"));
+	// TODO: default C++ open behavior (timeline, rotation, etc.)
 }
 
-void ADoor::CloseDoor()
+void ADoor::CloseDoor_Implementation()
 {
-	// TODO: add animation / sound
+	UE_LOG(LogTemp, Log, TEXT("ADoor::CloseDoor_Implementation (C++ default)"));
 	bIsOpen = false;
-	UE_LOG(LogTemp, Warning, TEXT("Door closed"));
+	// TODO: default C++ close behavior
 }

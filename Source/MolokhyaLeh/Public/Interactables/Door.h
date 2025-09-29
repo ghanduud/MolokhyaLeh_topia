@@ -32,12 +32,14 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Door")
 	bool bIsOpen = false;
 
-	// Door functions
-	UFUNCTION(BlueprintCallable, Category = "Door")
+	// Allow Blueprint override but provide C++ default
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category="Door")
 	void OpenDoor();
+	virtual void OpenDoor_Implementation();
 
-	UFUNCTION(BlueprintCallable, Category = "Door")
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category="Door")
 	void CloseDoor();
+	virtual void CloseDoor_Implementation();
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Lock")
 	FName RequiredKeyId = "Key_Door01";
