@@ -2,6 +2,7 @@
 
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
+#include "Dialogue/Dialogue.h"
 #include "DialogueWidget.generated.h"
 
 class UTextBlock;

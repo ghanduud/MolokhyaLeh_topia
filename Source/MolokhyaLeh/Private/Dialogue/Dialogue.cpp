@@ -109,20 +109,20 @@ void UDialogue::StartDialogue(APlayerController* PC)
     if (!PC || !DialogueWidgetClass) return;
     OwnerPC = PC;
 
-    if (!ActiveWidget)
+    if (!ActiveDialogueWidget)
     {
-        ActiveWidget = CreateWidget<UDialogueWidget>(PC, DialogueWidgetClass);
+        ActiveDialogueWidget = CreateWidget<UDialogueWidget>(PC, DialogueWidgetClass);
     }
-    if (!ActiveWidget) return;
+    if (!ActiveDialogueWidget) return;
 
-    ActiveWidget->AddToViewport(10000);
+    ActiveDialogueWidget->AddToViewport(10000);
     // Give widget the callbacks & data
-    ActiveWidget->OnAdvance.BindUObject(this, &UDialogue::AdvanceOrSkip);
-    ActiveWidget->OnChoose.BindUObject(this, &UDialogue::Choose);
+    ActiveDialogueWidget->OnAdvance.BindUObject(this, &UDialogue::AdvanceOrSkip);
+    ActiveDialogueWidget->OnChoose.BindUObject(this, &UDialogue::Choose);
 
     // Input mode UI Only
     FInputModeUIOnly Mode;
-    Mode.SetWidgetToFocus(ActiveWidget->TakeWidget());
+    Mode.SetWidgetToFocus(ActiveDialogueWidget->TakeWidget());
     Mode.SetLockMouseToViewportBehavior(EMouseLockMode::DoNotLock);
     PC->SetInputMode(Mode);
     PC->bShowMouseCursor = true;
@@ -135,9 +135,9 @@ void UDialogue::StartDialogue(APlayerController* PC)
 void UDialogue::ShowNode(const FString& NodeId)
 {
     const FDialogueNode* Node = Nodes.Find(NodeId);
-    if (!Node || !ActiveWidget) { EndDialogue(); return; }
+    if (!Node || !ActiveDialogueWidget) { EndDialogue(); return; }
 
-    ActiveWidget->ShowParagraph(Node->Paragraph, Node->Choices);
+    ActiveDialogueWidget->ShowParagraph(Node->Paragraph, Node->Choices);
     CurrentId = NodeId;
 
     // If there are no choices and no text, end
@@ -149,16 +149,16 @@ void UDialogue::ShowNode(const FString& NodeId)
 
 void UDialogue::AdvanceOrSkip()
 {
-    if (!ActiveWidget) return;
+    if (!ActiveDialogueWidget) return;
 
-    if (!ActiveWidget->IsParagraphFullyShown())
+    if (!ActiveDialogueWidget->IsParagraphFullyShown())
     {
-        ActiveWidget->RevealAll();
+        ActiveDialogueWidget->RevealAll();
     }
     else
     {
         // If choices exist, widget shows them and waits for Choose()
-        if (!ActiveWidget->HasChoices())
+        if (!ActiveDialogueWidget->HasChoices())
         {
             // sequential: try to go to an implicit NEXT if named "NEXT"
             const FDialogueNode* Node = Nodes.Find(CurrentId);
@@ -202,9 +202,9 @@ void UDialogue::EndDialogue()
         OwnerPC->bShowMouseCursor = false;
     }
 
-    if (ActiveWidget)
+    if (ActiveDialogueWidget)
     {
-        ActiveWidget->RemoveFromParent();
-        ActiveWidget = nullptr;
+        ActiveDialogueWidget->RemoveFromParent();
+        ActiveDialogueWidget = nullptr;
     }
 }

@@ -6,6 +6,7 @@
 
 class APlayerController;
 class UDialogueWidget;
+class UUserWidget;
 
 USTRUCT(BlueprintType)
 struct FDialogueChoice
@@ -48,7 +49,7 @@ public:
 
     // Default widget class (create a BP subclass of UDialogueWidget and assign it)
     UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Dialogue")
-    TSubclassOf<UUserWidget> DialogueWidgetClass;
+    TSubclassOf<UDialogueWidget> DialogueWidgetClass;
 
     // Load & parse the text file (call once in BeginPlay or on first interact)
     UFUNCTION(BlueprintCallable, Category = "Dialogue")
@@ -77,7 +78,7 @@ private:
 
 private:
     UPROPERTY()
-    UDialogueWidget* ActiveWidget = nullptr;
+    class UDialogueWidget* ActiveDialogueWidget = nullptr;
 
     UPROPERTY()
     APlayerController* OwnerPC = nullptr;

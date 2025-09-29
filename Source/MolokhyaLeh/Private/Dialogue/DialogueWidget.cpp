@@ -4,6 +4,7 @@
 #include "Components/Button.h"
 #include "Components/TextBlock.h"
 #include "TimerManager.h"
+#include "Dialogue/Dialogue.h" 
 
 void UDialogueWidget::ShowParagraph(const FText& Paragraph, const TArray<FDialogueChoice>& Choices)
 {
@@ -83,27 +84,40 @@ void UDialogueWidget::BuildChoices()
         Label->SetText(PendingChoices[i].Text);
         Btn->AddChild(Label);
 
-        Btn->OnClicked.AddUniqueDynamic(this, &UDialogueWidget::RevealAll); // ensure full text
         const int32 ChoiceIndex = i;
-        Btn->OnClicked.AddLambda([this, ChoiceIndex]()
-            {
-                if (OnChoose.IsBound())
-                {
-                    OnChoose.Execute(ChoiceIndex);
-                }
-            });
+
 
         Box_Choices->AddChild(Btn);
     }
 }
 
-FReply UDialogueWidget::NativeOnKeyDown(const FGeometry& InGeometry, const FKeyEvent& InKeyEvent)
+FReply UDialogueWidget::NativeOnKeyDown(const FGeometry& G, const FKeyEvent& E)
 {
-    if (InKeyEvent.GetKey() == EKeys::SpaceBar)
+    if (E.GetKey() == EKeys::SpaceBar)
     {
         if (!bFullyRevealed) RevealAll();
         else if (OnAdvance.IsBound()) OnAdvance.Execute();
         return FReply::Handled();
     }
-    return Super::NativeOnKeyDown(InGeometry, InKeyEvent);
+
+    // 1..9 selects choices[0..8]
+    if (PendingChoices.Num() > 0)
+    {
+        const TMap<FKey, int32> KeyToIdx = {
+            {EKeys::One,0},{EKeys::Two,1},{EKeys::Three,2},
+            {EKeys::Four,3},{EKeys::Five,4},{EKeys::Six,5},
+            {EKeys::Seven,6},{EKeys::Eight,7},{EKeys::Nine,8}
+        };
+        if (const int32* Idx = KeyToIdx.Find(E.GetKey()))
+        {
+            if (*Idx < PendingChoices.Num())
+            {
+                if (!bFullyRevealed) RevealAll();
+                if (OnChoose.IsBound()) OnChoose.Execute(*Idx);
+                return FReply::Handled();
+            }
+        }
+    }
+    return Super::NativeOnKeyDown(G, E);
 }
+
