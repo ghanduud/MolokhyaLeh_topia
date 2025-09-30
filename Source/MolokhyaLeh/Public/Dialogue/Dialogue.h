@@ -2,6 +2,7 @@
 
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
+#include "Engine/Texture2D.h"
 #include "Dialogue.generated.h"
 
 class APlayerController;
@@ -51,6 +52,12 @@ public:
     UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Dialogue")
     TSubclassOf<UDialogueWidget> DialogueWidgetClass;
 
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Dialogue|Speaker")
+    TSoftObjectPtr<UTexture2D> NPCPortrait;
+
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Dialogue|Speaker")
+    FText NPCDisplayName;
+
     // Load & parse the text file (call once in BeginPlay or on first interact)
     UFUNCTION(BlueprintCallable, Category = "Dialogue")
     bool LoadFromTextFile();
@@ -59,9 +66,11 @@ public:
     void StartDialogue(APlayerController* PC);
 
     // Called by Space/skip (widget forwards to component)
+    UFUNCTION(BlueprintCallable, Category = "Dialogue")
     void AdvanceOrSkip();
 
     // Called when a choice is clicked in the widget
+    UFUNCTION(BlueprintCallable, Category = "Dialogue")
     void Choose(int32 ChoiceIndex);
 
     // For NPCs to know if a dialogue is running

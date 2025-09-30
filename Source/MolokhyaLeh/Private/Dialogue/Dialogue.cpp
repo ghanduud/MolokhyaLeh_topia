@@ -18,8 +18,11 @@ void UDialogue::BeginPlay()
 
 bool UDialogue::LoadFromTextFile()
 {
-    if (DialogueFile.IsEmpty()) return false;
-
+    if (DialogueFile.IsEmpty())
+    {
+        UE_LOG(LogTemp, Warning, TEXT("Dialogue: DialogueFile is empty"));
+        return false;
+    }
     // NOTE: For packaged builds, this won't find files in Content.
     // For shipping, convert to DataTable/PrimaryDataAsset.
     const FString Path = FPaths::ProjectContentDir() / TEXT("Dialogue") / DialogueFile;
@@ -130,6 +133,8 @@ void UDialogue::StartDialogue(APlayerController* PC)
     bRunning = true;
     CurrentId = TEXT("START");
     ShowNode(CurrentId);
+    UTexture2D* PortraitTex = NPCPortrait.IsNull() ? nullptr : NPCPortrait.LoadSynchronous();
+    ActiveDialogueWidget->ApplySpeaker(PortraitTex, NPCDisplayName);
 }
 
 void UDialogue::ShowNode(const FString& NodeId)
@@ -139,6 +144,7 @@ void UDialogue::ShowNode(const FString& NodeId)
 
     ActiveDialogueWidget->ShowParagraph(Node->Paragraph, Node->Choices);
     CurrentId = NodeId;
+    if (ActiveDialogueWidget) { ActiveDialogueWidget->CurrentNodeId = NodeId; }
 
     // If there are no choices and no text, end
     if (Node->Paragraph.IsEmpty() && Node->Choices.Num() == 0)
