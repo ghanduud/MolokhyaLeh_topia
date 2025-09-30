@@ -2,8 +2,10 @@
 #include "Components/TextBlock.h"
 #include "Components/VerticalBox.h"
 #include "Components/Button.h"
-#include "Components/TextBlock.h"
 #include "TimerManager.h"
+#include "Components/Image.h"
+#include "Components/TextBlock.h"
+#include "Inventory/Inventory.h" 
 #include "Dialogue/Dialogue.h" 
 
 void UDialogueWidget::ShowParagraph(const FText& Paragraph, const TArray<FDialogueChoice>& Choices)
@@ -146,4 +148,41 @@ void UDialogueWidget::UI_ChooseIndex(int32 Index)
     {
         OnChoose.Execute(Index);
     }
+}
+
+void UDialogueWidget::ApplySpeaker(UTexture2D* Portrait, const FText& Name)
+{
+    if (NPCPortraitImage)
+    {
+        NPCPortraitImage->SetBrushFromTexture(Portrait, true);
+        NPCPortraitImage->SetVisibility(ESlateVisibility::SelfHitTestInvisible);
+    }
+    if (NPCNameText) NPCNameText->SetText(Name);
+}
+
+bool UDialogueWidget::UI_TryBuySilk()
+{
+    APlayerController* PC = GetOwningPlayer();
+    if (!PC) return false;
+    APawn* P = PC->GetPawn();
+    if (!P) return false;
+
+    if (UInventory* Inv = P->FindComponentByClass<UInventory>())
+    {
+        // Find coin quantity
+        const TArray<FInventoryItem> Items = Inv->GetAll();
+        int32 Coins = 0;
+        for (const auto& It : Items)
+        {
+            if (It.ItemId == CoinId) { Coins = It.Quantity; break; }
+        }
+
+        if (Coins >= HagglePrice)
+        {
+            Inv->ConsumeItem(CoinId, HagglePrice);
+            Inv->AddItem(SilkId, EItemType::Consumable, 1, FText::FromString(TEXT("Silk")));
+            return true;
+        }
+    }
+    return false;
 }
